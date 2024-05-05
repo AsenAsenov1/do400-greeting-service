@@ -1,34 +1,14 @@
-pipeline {
-    agent {
-        label "nodejs"
-    }
-    stages {
-        stage("Install dependencies") {
-            steps {
-                sh "npm ci"
-            }
-        }
+pipeline{
+    agent any
 
-        stage("Check Style") {
-            steps {
-                sh "npm run lint"
-            }
-        }
-
-        stage("Test") {
-            steps {
-                sh "npm test"
-            }
-        }
-
+    stages{
         stage('Deploy') {
             steps {
                 sh '''
-                    oc project palpbr-greetings
+                    oc project palpbr-deploy-strategies
                     oc start-build greeting-service --follow --wait
                 '''
             }
         }
     }
 }
-
